@@ -1,12 +1,12 @@
 
 $(document).ready(function(){
-  addPlayer();
+  addPlayer("playerCircle", gameWidth/2, gameWidth/2, 10);
   add100Enemies();
-  $('body').on("mousedown",".playerCircle",function(){
-    $(document).mousemove(function(e){
-      movePlayer(e);
-    });
-  });
+  // $('body').on("mousedown",".playerCircle",function(){
+  //   $(document).mousemove(function(e){
+  //     movePlayer(e);
+  //   });
+  // });
   setInterval(moveEnemies,2000);
 });
 
@@ -17,33 +17,49 @@ var svg = d3.select("body").append("svg").attr("width",gameWidth).attr("height",
 
 //PLAYER FUNCTIONS
 
-var addPlayer= function() {
-  var player = svg.selectAll(".playerCircle").data([{cx: gameWidth/2, cy: gameHeight/2}]);
-
-  var addPlayer = player.enter().append("circle").attr("class", "playerCircle");
-
-  addPlayer.attr("cy", function(d) {
-    return d.cy;
+var drag = d3.behavior.drag()
+  .on("drag", function(d,i) {
+    d.x += d3.event.dx;
+    d.y += d3.event.dy;
+    d3.select(this).attr("transform", function(d,i){
+      return "translate(" + [ d.x,d.y ] + ")";
   });
+});
 
-  addPlayer.attr("cx", function(d) {
-    return d.cx;
-  });
+var addPlayer= function(className, x, y, r) {
+  var player = svg.selectAll(".playerCircle").data([{cx: x, cy: y}]);
+  var addPlayer = player.enter().append("circle")
+  .data([{"x":x, "y":y}])
+  .attr("class", className)
+  .attr("transform", "translate(" + x + "," + y + ")");
+  player.call(drag);
+
+  // addPlayer.attr("cy", function(d) {
+  //   return d.cy;
+  // });
+
+  // addPlayer.attr("cx", function(d) {
+  //   return d.cx;
+  // });
 
   addPlayer.attr("r", "10").attr("fill","orange");
 };
 
-var movePlayer = function(mousePos) {
-  //get mouse position and update data element with new position
-  var player = svg.selectAll(".playerCircle").data([{cx: mousePos.pageX, cy: mousePos.pageY}]);
-  player.transition().duration(300).attr("cy", function(d) {
-   return d.cy;
-  }).attr("cx", function(d) {
-   return d.cx;
-  });
 
-  //Handle if mouse is outside of bounds??
-};
+
+
+
+// var movePlayer = function(mousePos) {
+//   //get mouse position and update data element with new position
+//   var player = svg.selectAll(".playerCircle").data([{cx: mousePos.pageX, cy: mousePos.pageY}]);
+//   player.transition().duration(300).attr("cy", function(d) {
+//    return d.cy;
+//   }).attr("cx", function(d) {
+//    return d.cx;
+//   });
+
+//   //Handle if mouse is outside of bounds??
+// };
 
 
 
