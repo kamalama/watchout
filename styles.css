@@ -1,5 +1,9 @@
 
-circle {
+.enemyCircle {
   fill: black;
 
+}
+
+.playerCircle {
+  fill: orange;
 }
