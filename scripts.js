@@ -33,13 +33,15 @@ var add100Enemies = function(){
 
 var enemiesMove = function(){
   var enemies= svg.selectAll("circle").data(getPos());
-  enemies.transition().attr("cy", function(d) {
+  enemies.transition().duration(2000).attr("cy", function(d) {
    return d.cy;
   }).attr("cx", function(d) {
    return d.cx;
   });
 };
 
+add100Enemies();
+setInterval(enemiesMove,2000);
 
 // function() {
 //  svg.append("enemy")
