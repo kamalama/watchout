@@ -19,8 +19,19 @@ var svg = d3.select("body").append("svg").attr("width",gameWidth).attr("height",
 
 var drag = d3.behavior.drag()
   .on("drag", function(d,i) {
-    d.x += d3.event.dx;
-    d.y += d3.event.dy;
+    //test for extremes
+    if(d.x+d3.event.dx < gameWidth) {
+      d.x += d3.event.dx;
+    }
+    else {
+      d.x=gameWidth;
+    }
+    if(d.y+d3.event.dy < gameHeight) {
+     d.y += d3.event.dy;
+    }
+    else {
+      d.y=gameheight;
+    }
     d3.select(this).attr("transform", function(d,i){
       return "translate(" + [ d.x,d.y ] + ")";
   });
