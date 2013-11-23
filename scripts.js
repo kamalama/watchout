@@ -4,13 +4,17 @@ var gameHeight = 585;
 
 var svg = d3.select("body").append("svg").attr("width",gameWidth).attr("height",gameHeight);
 
-var add100Enemies = function(){
-  //Generate an array of 100 objects with a randomnly chosen cx and cy propoerties
-  var enemyPos = _.map(_.range(100),function(){
+//Generate an array of 100 objects with a randomnly chosen cx and cy propoerties
+var getPos = function(){
+  return _.map(_.range(100),function(){
     return {cx:Math.random()*(gameWidth-10), cy:Math.random()*(gameHeight-10)};
   });
+};
+
+
+var add100Enemies = function(){
   //selects the circles and attaches data (enemyPos) to it
-  var enemies= svg.selectAll("circle").data(enemyPos);
+  var enemies= svg.selectAll("circle").data(getPos());
 
   // add a circle for each enemy position
   var addCircles = enemies.enter().append("circle");
@@ -25,6 +29,15 @@ var add100Enemies = function(){
   });
 
   addCircles.attr("r","10");
+};
+
+var enemiesMove = function(){
+  var enemies= svg.selectAll("circle").data(getPos());
+  enemies.transition().attr("cy", function(d) {
+   return d.cy;
+  }).attr("cx", function(d) {
+   return d.cx;
+  });
 };
 
 
